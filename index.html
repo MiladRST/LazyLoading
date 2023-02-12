@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Lazy Loading</title>
+
+    <style>
+        .lazy-img {
+            background-image: url(blurred-placeholder.jpg);
+            background-size: cover;
+            width: 100%;
+            height: 300px;
+            display: block;
+            filter:blur(20px);
+            transition: filter 0.7s;
+        }
+        .lazy-img.show {
+          filter: blur(0)
+        }
+    </style>
+</head>
+
+<body>
+
+    <main>
+        <img src="" class="lazy-img" data-src="your-first-image-url.jpg" alt="Your image">
+        <img src="" class="lazy-img" data-src="your-second-image-url.jpg" alt="Your image">
+        <img src="" class="lazy-img" data-src="your-third-image-url.jpg" alt="Your image">
+        <img src="" class="lazy-img" data-src="your-fourth-image-url.jpg" alt="Your image">
+        <img src="" class="lazy-img" data-src="your-fifth-image-url.jpg" alt="Your image">
+    </main>
+
+
+
+
+    <script>
+        // This code uses the IntersectionObserver API to observe when the image comes into view.
+        // When it does, the lazyLoad function sets the src attribute of the image
+        // to the URL specified in the data-src attribute.
+      
+        const images = document.querySelectorAll('.lazy-img');
+        const lazyLoad = target => {
+            const io = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.classList.add('show');
+                        const src = img.getAttribute('data-src');
+                        img.setAttribute('src', src);
+                        observer.disconnect();
+                    }
+                });
+            });
+            io.observe(target);
+        };
+
+        images.forEach(img => {
+            lazyLoad(img);
+        });
+
+    </script>
+
+</body>
+
+</html>
